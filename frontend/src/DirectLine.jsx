@@ -21,8 +21,8 @@ import { Textarea } from './components/ui/textarea';
 import { Input } from './components/ui/input';
 import { Badge } from './components/ui/badge';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = "https://the-direct-line.onrender.com/api"; 
 
 const DirectLine = () => {
   const [viewMode, setViewMode] = useState('citizen');
