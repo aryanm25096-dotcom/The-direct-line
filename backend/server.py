@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter, HTTPException
 from dotenv import load_dotenv
-from fastapi.middleware.cors import CORSMiddleware  # Changed to fastapi.middleware
+from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
@@ -22,16 +22,6 @@ tickets_collection = db['tickets']
 
 # Create the main app
 app = FastAPI()
-
-# --- ✅ FIX: CORS MIDDLEWARE GOES HERE (AT THE TOP) ---
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
-# ------------------------------------------------------
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -152,9 +142,16 @@ async def update_ticket_status(ticket_id: str, status_update: TicketStatusUpdate
 async def root():
     return {"message": "The Direct Line API", "status": "operational"}
 
-# --- ✅ FIX: INCLUDE ROUTER GOES LAST ---
+# Include the router in the main app
 app.include_router(api_router)
-# ----------------------------------------
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
