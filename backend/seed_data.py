@@ -1,4 +1,4 @@
-"""Seed initial tickets data"""
+`"""Seed initial tickets data"""
 import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime, timedelta
